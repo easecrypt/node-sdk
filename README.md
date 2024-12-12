@@ -40,6 +40,7 @@ We use [Conventional Commits](https://conventionalcommits.org/) to standardize c
 - `fix`: A bug fix
 - `refactor`: A code change that neither fixes a bug nor adds a feature
 - `chore`: Changes to the build process or auxiliary tools and libraries such as documentation generation
+- `build`: Changes to the build process
 
 ### Commit scope
 
@@ -47,6 +48,5 @@ We use [Conventional Commits](https://conventionalcommits.org/) to standardize c
 - `utils`: Changes to the utils
 - `generator`: Changes to the generator
 - `test`: Changes to the test
-- `build`: Changes to the build process
 - `deps`: Changes to the dependencies
 - `docs`: Changes to the documentation

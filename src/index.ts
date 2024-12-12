@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import { ApiResponse } from './types';
+import createClient from "openapi-fetch";
 
 /**
  * API client for wallet-related operations
