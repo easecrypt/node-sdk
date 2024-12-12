@@ -1,0 +1,88 @@
+{
+    "name": "@easecrypt/node-sdk",
+    "version": "1.0.0",
+    "description": "Node.js SDK for Easecrypt API",
+    "scripts": {
+        "build": "tsup",
+        "semantic-release": "semantic-release"
+    },
+    "keywords": [
+        "send",
+        "cryptocurrency",
+        "bitcoin",
+        "litecoin"
+    ],
+    "author": {
+        "name": "EaseCrypt",
+        "email": "support@easecrypt.com",
+        "url": "https://easecrypt.com"
+    },
+    "engines": {
+        "node": ">=14.0"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "semantic-release": "^24.2.0",
+        "tsup": "^8.3.5",
+        "typescript": "^5.7.2"
+    },
+    "release": {
+        "branches": [
+            "main"
+        ],
+        "plugins": [
+            [
+                "@semantic-release/commit-analyzer",
+                {
+                    "preset": "conventionalcommits",
+                    "releaseRules": [
+                        {
+                            "type": "build",
+                            "scope": "deps",
+                            "release": "patch"
+                        }
+                    ]
+                }
+            ],
+            [
+                "@semantic-release/release-notes-generator",
+                {
+                    "preset": "conventionalcommits",
+                    "presetConfig": {
+                        "types": [
+                            {
+                                "type": "feat",
+                                "section": "Features"
+                            },
+                            {
+                                "type": "fix",
+                                "section": "Bug Fixes"
+                            },
+                            {
+                                "type": "build",
+                                "section": "Dependencies and Other Build Updates",
+                                "hidden": false
+                            }
+                        ]
+                    }
+                }
+            ],
+            "@semantic-release/npm",
+            "@semantic-release/github"
+        ]
+    },
+    "files": [
+        "dist",
+        "package.json"
+    ],
+    "exports": {
+        ".": {
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts"
+}
