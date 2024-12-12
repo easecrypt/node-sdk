@@ -1,27 +1,24 @@
-/**
- * A utility class for generating random numbers
- */
-class RandomGenerator {
-    /**
-     * Generates a random number between min and max (inclusive)
-     * @param min - The minimum value (default: 0)
-     * @param max - The maximum value (default: 100)
-     * @returns A random number between min and max
-     */
-    public static getRandomNumber(min: number = 0, max: number = 100): number {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+import fetch from 'node-fetch';
+import { ApiResponse } from './types';
 
+/**
+ * API client for wallet-related operations
+ */
+export class WalletAPI {
     /**
-     * Generates an array of random numbers
-     * @param length - The length of the array to generate
-     * @param min - The minimum value (default: 0)
-     * @param max - The maximum value (default: 100)
-     * @returns An array of random numbers between min and max
+     * Tests the API connection by making a GET request to the test endpoint
+     * @returns Promise containing the API status
+     * @throws Error if the API request fails
      */
-    public static getRandomArray(length: number, min: number = 0, max: number = 100): number[] {
-        return Array.from({ length }, () => RandomGenerator.getRandomNumber(min, max));
+    public async testApi(): Promise<string> {
+        try {
+            const response = await fetch('https://dummyjson.com/test');
+            const data = (await response.json()) as ApiResponse;
+            return data.status;
+        } catch (error) {
+            throw new Error(`API test failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
     }
 }
 
-export default RandomGenerator;
+export default WalletAPI;
