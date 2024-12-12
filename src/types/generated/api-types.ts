@@ -1,12 +1,12 @@
 export interface paths {
-    "/api/test-api": {
+    "/api/health": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["getApiTest-api"];
+        get: operations["getApiHealth"];
         put?: never;
         post?: never;
         delete?: never;
@@ -63,7 +63,7 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    "getApiTest-api": {
+    getApiHealth: {
         parameters: {
             query?: never;
             header?: never;
@@ -76,7 +76,35 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": {
+                        /** @default 200 */
+                        status: number;
+                        message: string;
+                        data: {
+                            wallet_id: string;
+                            wallet_name: string;
+                        };
+                    };
+                    "multipart/form-data": {
+                        /** @default 200 */
+                        status: number;
+                        message: string;
+                        data: {
+                            wallet_id: string;
+                            wallet_name: string;
+                        };
+                    };
+                    "text/plain": {
+                        /** @default 200 */
+                        status: number;
+                        message: string;
+                        data: {
+                            wallet_id: string;
+                            wallet_name: string;
+                        };
+                    };
+                };
             };
         };
     };
