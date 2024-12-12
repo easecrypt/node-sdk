@@ -1,6 +1,6 @@
 {
     "name": "@easecrypt/node-sdk",
-    "version": "1.0.0",
+    "version": "0.5.0",
     "description": "Node.js SDK for Easecrypt API",
     "scripts": {
         "build": "tsup",
