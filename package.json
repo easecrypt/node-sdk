@@ -3,7 +3,7 @@
     "publishConfig": {
         "access": "public"
     },
-    "version": "0.5.1",
+    "version": "1.0.0",
     "description": "Node.js SDK for Easecrypt API",
     "scripts": {
         "build": "tsup",
@@ -100,17 +100,16 @@
     ],
     "exports": {
         ".": {
-            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts",
             "import": "./dist/index.mjs",
-            "types": "./dist/index.d.ts"
+            "require": "./dist/index.js",
+            "default": "./dist/index.js"
         }
     },
-    "main": "./dist/index.js",
-    "module": "./dist/index.mjs",
-    "types": "./dist/index.d.ts",
     "dependencies": {
         "node-fetch": "^3.3.2",
         "openapi-fetch": "^0.13.3",
-        "openapi-typescript": "^7.4.4"
+        "openapi-typescript": "^7.4.4",
+        "openapi-typescript-helpers": "^0.0.15"
     }
 }

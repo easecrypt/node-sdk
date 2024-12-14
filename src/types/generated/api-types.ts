@@ -6,6 +6,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * Check API health
+         * @description Check if the API service is running and if you have access to the API
+         */
         get: operations["getApiHealth"];
         put?: never;
         post?: never;
@@ -35,16 +39,60 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/secure-endpoint": {
+    "/api/balance/{symbol}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["getApiSecure-endpoint"];
+        /**
+         * Get balance of a cryptocurrency
+         * @description Returns the balance of a cryptocurrency and its value in USD
+         */
+        get: operations["getApiBalanceBySymbol"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/validate-address/{symbol}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Validate an address
+         * @description Validate an address
+         */
+        post: operations["postApiValidate-addressBySymbol"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/send-transaction/{symbol}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send a transaction
+         * @description Send a transaction to the network
+         */
+        post: operations["postApiSend-transactionBySymbol"];
         delete?: never;
         options?: never;
         head?: never;
@@ -72,6 +120,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description Success response - Cost: 0 tokens */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -188,20 +237,308 @@ export interface operations {
             };
         };
     };
-    "getApiSecure-endpoint": {
+    getApiBalanceBySymbol: {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                symbol: "ltc";
+            };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            /** @description Success response - Cost: 1 token */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            balance: number;
+                            balance_usd: number;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                    "multipart/form-data": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            balance: number;
+                            balance_usd: number;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                    "text/plain": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            balance: number;
+                            balance_usd: number;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                };
+            };
+            /** @description Invalid symbol - Cost: 0 tokens */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default 422 */
+                        status: number;
+                        message: string;
+                    };
+                    "multipart/form-data": {
+                        /** @default 422 */
+                        status: number;
+                        message: string;
+                    };
+                    "text/plain": {
+                        /** @default 422 */
+                        status: number;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "postApiValidate-addressBySymbol": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                symbol: "ltc";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    address: string;
+                };
+                "multipart/form-data": {
+                    address: string;
+                };
+                "text/plain": {
+                    address: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Success response - Cost: 1 tokens */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            address_valid: boolean;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                    "multipart/form-data": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            address_valid: boolean;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                    "text/plain": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            address_valid: boolean;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                };
+            };
+            /** @description Invalid symbol - Cost: 0 tokens */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default 422 */
+                        status: number;
+                        message: string;
+                    };
+                    "multipart/form-data": {
+                        /** @default 422 */
+                        status: number;
+                        message: string;
+                    };
+                    "text/plain": {
+                        /** @default 422 */
+                        status: number;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "postApiSend-transactionBySymbol": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                symbol: "ltc";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    recipients: Record<string, never>;
+                };
+                "multipart/form-data": {
+                    recipients: Record<string, never>;
+                };
+                "text/plain": {
+                    recipients: Record<string, never>;
+                };
+            };
+        };
+        responses: {
+            /** @description Success response - Cost: 2 tokens */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            txid: string;
+                            amount: number;
+                            fee: number;
+                            amount_total: number;
+                            destinations: Record<string, never>;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                    "multipart/form-data": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            txid: string;
+                            amount: number;
+                            fee: number;
+                            amount_total: number;
+                            destinations: Record<string, never>;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                    "text/plain": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            txid: string;
+                            amount: number;
+                            fee: number;
+                            amount_total: number;
+                            destinations: Record<string, never>;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                };
+            };
+            /** @description Invalid recipients - Cost: 1 tokens */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default 400 */
+                        status: number;
+                        message: string;
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                    "multipart/form-data": {
+                        /** @default 400 */
+                        status: number;
+                        message: string;
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                    "text/plain": {
+                        /** @default 400 */
+                        status: number;
+                        message: string;
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                };
+            };
+            /** @description Internal server error - Cost: 0 tokens */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default 500 */
+                        status: number;
+                        message: string;
+                    };
+                    "multipart/form-data": {
+                        /** @default 500 */
+                        status: number;
+                        message: string;
+                    };
+                    "text/plain": {
+                        /** @default 500 */
+                        status: number;
+                        message: string;
+                    };
+                };
             };
         };
     };
