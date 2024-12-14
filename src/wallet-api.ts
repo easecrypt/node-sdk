@@ -1,6 +1,6 @@
 import createClient from 'openapi-fetch';
 import type { paths } from './types/generated/api-types';
-import { PriceResponse, PriceSymbol, ValidateAddressSymbol } from './types/wallet-api';
+import { BalanceResponse, BalanceSymbol, PriceResponse, PriceSymbol, ValidateAddressSymbol } from './types/wallet-api';
 
 /**
  * API client for wallet-related operations
@@ -92,5 +92,32 @@ export class WalletAPI {
         }
 
         return data.data.address_valid;
+    }
+
+    /**
+     * Returns the balance of a cryptocurrency and its value in USD
+     * @param symbol - The cryptocurrency symbol (e.g., 'BTC', 'ETH', 'LTC')
+     * @returns A Promise that resolves to a BalanceResponse containing the balance and USD value
+     * @throws {Error} When the API request fails or returns a non-200 status
+     * @example
+     * ```ts
+     * const api = new WalletAPI(apiKey, secretKey);
+     * const balance = await api.getBalance('BTC');
+     * // Returns: { balance: 0.250, balance_usd: 120 }
+     * ```
+     */
+    public async getBalance(symbol: BalanceSymbol): Promise<BalanceResponse> {
+        const { data, error, response } = await this.client.GET('/api/balance/{symbol}', {
+            params: {
+                path: { symbol },
+            },
+        });
+
+        if (error || response.status !== 200) {
+            console.error('API Error:', error);
+            throw new Error(`Unknown error occurred.`);
+        }
+
+        return data.data;
     }
 }
