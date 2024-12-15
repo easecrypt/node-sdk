@@ -3,13 +3,14 @@
     "publishConfig": {
         "access": "public"
     },
-    "version": "0.5.1",
+    "version": "1.0.0",
     "description": "Node.js SDK for Easecrypt API",
     "scripts": {
         "build": "tsup",
         "semantic-release": "semantic-release",
         "prettier": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-        "test": "vitest"
+        "test": "vitest",
+        "generate:schema": "tsx src/generators/schema.ts"
     },
     "keywords": [
         "send",
@@ -37,6 +38,7 @@
         "prettier-plugin-organize-imports": "^4.1.0",
         "semantic-release": "^24.2.0",
         "tsup": "^8.3.5",
+        "tsx": "^4.19.2",
         "typescript": "^5.7.2",
         "vitest": "^2.1.8"
     },
@@ -66,16 +68,23 @@
                         "types": [
                             {
                                 "type": "feat",
-                                "section": "Features"
+                                "section": "🧠 Features"
                             },
                             {
                                 "type": "fix",
-                                "section": "Bug Fixes"
+                                "section": "🐛 Bug Fixes"
+                            },
+                            {
+                                "type": "refactor",
+                                "section": "🧑‍💻 Code Refactoring"
                             },
                             {
                                 "type": "build",
-                                "section": "Dependencies and Other Build Updates",
-                                "hidden": false
+                                "section": "🤖 Build System"
+                            },
+                            {
+                                "type": "chore",
+                                "section": "🧹 Other"
                             }
                         ]
                     }
@@ -91,15 +100,16 @@
     ],
     "exports": {
         ".": {
-            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts",
             "import": "./dist/index.mjs",
-            "types": "./dist/index.d.ts"
+            "require": "./dist/index.js",
+            "default": "./dist/index.js"
         }
     },
-    "main": "./dist/index.js",
-    "module": "./dist/index.mjs",
-    "types": "./dist/index.d.ts",
     "dependencies": {
-        "node-fetch": "^3.3.2"
+        "node-fetch": "^3.3.2",
+        "openapi-fetch": "^0.13.3",
+        "openapi-typescript": "^7.4.4",
+        "openapi-typescript-helpers": "^0.0.15"
     }
 }
