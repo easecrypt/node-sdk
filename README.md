@@ -50,3 +50,9 @@ We use [Conventional Commits](https://conventionalcommits.org/) to standardize c
 - `test`: Changes to the test
 - `deps`: Changes to the dependencies
 - `docs`: Changes to the documentation
+
+## Todo
+
+- [ ] Better error handling (with custom errors)
+- [ ] Real tests
+- [ ] Better documentation

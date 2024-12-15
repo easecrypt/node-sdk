@@ -418,13 +418,19 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    recipients: Record<string, never>;
+                    recipients: {
+                        [key: string]: number;
+                    };
                 };
                 "multipart/form-data": {
-                    recipients: Record<string, never>;
+                    recipients: {
+                        [key: string]: number;
+                    };
                 };
                 "text/plain": {
-                    recipients: Record<string, never>;
+                    recipients: {
+                        [key: string]: number;
+                    };
                 };
             };
         };
@@ -443,7 +449,9 @@ export interface operations {
                             amount: number;
                             fee: number;
                             amount_total: number;
-                            destinations: Record<string, never>;
+                            destinations: {
+                                [key: string]: number;
+                            };
                         };
                         tokens: {
                             consumed: number;
@@ -458,7 +466,9 @@ export interface operations {
                             amount: number;
                             fee: number;
                             amount_total: number;
-                            destinations: Record<string, never>;
+                            destinations: {
+                                [key: string]: number;
+                            };
                         };
                         tokens: {
                             consumed: number;
@@ -473,7 +483,9 @@ export interface operations {
                             amount: number;
                             fee: number;
                             amount_total: number;
-                            destinations: Record<string, never>;
+                            destinations: {
+                                [key: string]: number;
+                            };
                         };
                         tokens: {
                             consumed: number;

@@ -1,6 +1,15 @@
 import createClient from 'openapi-fetch';
 import type { paths } from './types/generated/api-types';
-import { BalanceResponse, BalanceSymbol, PriceResponse, PriceSymbol, ValidateAddressSymbol } from './types/wallet-api';
+import {
+    BalanceResponse,
+    BalanceSymbol,
+    PriceResponse,
+    PriceSymbol,
+    SendTransactionRecipients,
+    SendTransactionResponse,
+    SendTransactionSymbol,
+    ValidateAddressSymbol,
+} from './types/wallet-api';
 
 /**
  * API client for wallet-related operations
@@ -111,6 +120,44 @@ export class WalletAPI {
             params: {
                 path: { symbol },
             },
+        });
+
+        if (error || response.status !== 200) {
+            console.error('API Error:', error);
+            throw new Error(`Unknown error occurred.`);
+        }
+
+        return data.data;
+    }
+
+    /**
+     * Sends a cryptocurrency transaction to specified recipients
+     * @param recipients - An object mapping recipient addresses to amounts
+     * @param symbol - The cryptocurrency symbol (e.g., 'BTC', 'ETH', 'LTC')
+     * @returns A Promise that resolves to a SendTransactionResponse containing transaction details
+     * @throws {Error} When the API request fails or returns a non-200 status
+     * @example
+     * ```ts
+     * const api = new WalletAPI(apiKey, secretKey);
+     * const recipients = {
+     *   "ltc1q4pluxq9wgtmjn3kce03jutla93gu4vgp447fvu": 0.00031
+     * };
+     * const transaction = await api.sendTransaction(recipients, 'LTC');
+     * // Returns: {
+     * //   txid: "...",
+     * //   amount: 0.00031,
+     * //   fee: 0.0001,
+     * //   amount_total: 0.00041,
+     * //   destinations: {...}
+     * // }
+     * ```
+     */
+    public async sendTransaction(recipients: SendTransactionRecipients, symbol: SendTransactionSymbol): Promise<SendTransactionResponse> {
+        const { data, error, response } = await this.client.POST('/api/send-transaction/{symbol}', {
+            params: {
+                path: { symbol },
+            },
+            body: { recipients },
         });
 
         if (error || response.status !== 200) {
