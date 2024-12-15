@@ -1,8 +1,9 @@
-name: Release
+name: CI/CD
 on:
   push:
     branches:
       - main
+      - development
     paths-ignore:
       - '**.md'
       - '.gitignore'
@@ -10,13 +11,12 @@ on:
       - '.prettierrc'
 
 jobs:
-  release:
-    name: Release
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
+  test-and-build:
+    name: Run tests
     runs-on: ubuntu-latest
+    env:
+      X_API_KEY: ${{ secrets.X_API_KEY }}
+      X_SECRET_KEY: ${{ secrets.X_SECRET_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,6 +42,35 @@ jobs:
         
       - name: Build
         run: pnpm build
+
+  release:
+    name: Release package
+    needs: test-and-build
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'pnpm'
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
         
       - name: Release
         env:
