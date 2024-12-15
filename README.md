@@ -50,6 +50,7 @@ We use [Conventional Commits](https://conventionalcommits.org/) to standardize c
 - `test`: Changes to the test
 - `deps`: Changes to the dependencies
 - `docs`: Changes to the documentation
+- `ci`: Changes to the CI/CD
 
 ## Todo
 
