@@ -21,7 +21,7 @@ export class WalletAPI {
         private readonly apiKey: string,
         private readonly secretKey: string
     ) {
-        const baseUrl = process.env.GITHUB_ACTIONS ? 'https://easecrypt.com/' : 'http://localhost:3001/';
+        const baseUrl = process.env.EASECRYPT_API_URL || 'https://easecrypt.com/';
 
         this.client = createClient<paths>({
             baseUrl,
