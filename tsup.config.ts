@@ -10,5 +10,8 @@ export default defineConfig({
     dts: true,
     esbuildOptions(options) {
         options.drop = ['console']; // Remove console.log statements
+        options.define = {
+            'process.env.EASECRYPT_API_URL': '"https://easecrypt.com/"'
+        };
     },
 });
