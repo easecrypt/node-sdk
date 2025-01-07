@@ -35,10 +35,15 @@ describe('WalletAPI', () => {
 
             const result = await wallet.healthCheck();
 
-            // Only check status and message
             expect(result.status).toBe(200);
             expect(result.message).toBe("ok");
-            expect(mockGet).toHaveBeenCalledWith('/api/health');
+            expect(mockGet).toHaveBeenCalledWith('/api/health', {
+                params: {
+                    header: {
+                        'x-api-key': 'test-api-key'
+                    }
+                }
+            });
             expect(mockGet).toHaveBeenCalledTimes(1);
         });
 
@@ -51,7 +56,13 @@ describe('WalletAPI', () => {
 
             await expect(wallet.healthCheck()).rejects.toThrow('Unknown error occurred.');
 
-            expect(mockGet).toHaveBeenCalledWith('/api/health');
+            expect(mockGet).toHaveBeenCalledWith('/api/health', {
+                params: {
+                    header: {
+                        'x-api-key': 'test-api-key'
+                    }
+                }
+            });
             expect(mockGet).toHaveBeenCalledTimes(1);
         });
     });
