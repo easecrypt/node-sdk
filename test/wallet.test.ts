@@ -40,7 +40,7 @@ describe('WalletAPI', () => {
             expect(mockGet).toHaveBeenCalledWith('/api/health', {
                 params: {
                     header: {
-                        'x-api-key': 'test-api-key'
+                        'x-api-key': mockApiKey
                     }
                 }
             });
@@ -59,7 +59,7 @@ describe('WalletAPI', () => {
             expect(mockGet).toHaveBeenCalledWith('/api/health', {
                 params: {
                     header: {
-                        'x-api-key': 'test-api-key'
+                        'x-api-key': mockApiKey
                     }
                 }
             });
