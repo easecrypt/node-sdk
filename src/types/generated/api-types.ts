@@ -39,26 +39,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/balance/{symbol}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get balance of a cryptocurrency
-         * @description Returns the balance of a cryptocurrency and its value in USD
-         */
-        get: operations["getApiBalanceBySymbol"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/validate-address/{symbol}": {
         parameters: {
             query?: never;
@@ -73,6 +53,26 @@ export interface paths {
          * @description Validate an address
          */
         post: operations["postApiValidate-addressBySymbol"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/balance/{symbol}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get balance of a cryptocurrency
+         * @description Returns the balance of a cryptocurrency and its value in USD
+         */
+        get: operations["getApiBalanceBySymbol"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -114,7 +114,9 @@ export interface operations {
     getApiHealth: {
         parameters: {
             query?: never;
-            header?: never;
+            header: {
+                "x-api-key": string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -160,7 +162,9 @@ export interface operations {
     getApiPriceBySymbol: {
         parameters: {
             query?: never;
-            header?: never;
+            header: {
+                "x-api-key": string;
+            };
             path: {
                 symbol: "ltc" | "sol";
             };
@@ -237,92 +241,14 @@ export interface operations {
             };
         };
     };
-    getApiBalanceBySymbol: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                symbol: "ltc";
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success response - Cost: 1 token */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @default 200 */
-                        status: number;
-                        data: {
-                            balance: number;
-                            balance_usd: number;
-                        };
-                        tokens: {
-                            consumed: number;
-                            remaining: number;
-                        };
-                    };
-                    "multipart/form-data": {
-                        /** @default 200 */
-                        status: number;
-                        data: {
-                            balance: number;
-                            balance_usd: number;
-                        };
-                        tokens: {
-                            consumed: number;
-                            remaining: number;
-                        };
-                    };
-                    "text/plain": {
-                        /** @default 200 */
-                        status: number;
-                        data: {
-                            balance: number;
-                            balance_usd: number;
-                        };
-                        tokens: {
-                            consumed: number;
-                            remaining: number;
-                        };
-                    };
-                };
-            };
-            /** @description Invalid symbol - Cost: 0 tokens */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @default 422 */
-                        status: number;
-                        message: string;
-                    };
-                    "multipart/form-data": {
-                        /** @default 422 */
-                        status: number;
-                        message: string;
-                    };
-                    "text/plain": {
-                        /** @default 422 */
-                        status: number;
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
     "postApiValidate-addressBySymbol": {
         parameters: {
             query?: never;
-            header?: never;
+            header: {
+                "x-api-key": string;
+            };
             path: {
-                symbol: "ltc";
+                symbol: "ltc" | "sol";
             };
             cookie?: never;
         };
@@ -406,12 +332,120 @@ export interface operations {
             };
         };
     };
+    getApiBalanceBySymbol: {
+        parameters: {
+            query?: never;
+            header: {
+                "x-api-key": string;
+            };
+            path: {
+                symbol: "ltc" | "sol";
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success response - Cost: 1 token */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            balance: number;
+                            balance_usd: number;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                    "multipart/form-data": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            balance: number;
+                            balance_usd: number;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                    "text/plain": {
+                        /** @default 200 */
+                        status: number;
+                        data: {
+                            balance: number;
+                            balance_usd: number;
+                        };
+                        tokens: {
+                            consumed: number;
+                            remaining: number;
+                        };
+                    };
+                };
+            };
+            /** @description Coin not active - Cost: 0 tokens */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default 404 */
+                        status: number;
+                        message: string;
+                    };
+                    "multipart/form-data": {
+                        /** @default 404 */
+                        status: number;
+                        message: string;
+                    };
+                    "text/plain": {
+                        /** @default 404 */
+                        status: number;
+                        message: string;
+                    };
+                };
+            };
+            /** @description Invalid symbol - Cost: 0 tokens */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default 422 */
+                        status: number;
+                        message: string;
+                    };
+                    "multipart/form-data": {
+                        /** @default 422 */
+                        status: number;
+                        message: string;
+                    };
+                    "text/plain": {
+                        /** @default 422 */
+                        status: number;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
     "postApiSend-transactionBySymbol": {
         parameters: {
             query?: never;
-            header?: never;
+            header: {
+                "x-api-key": string;
+                "x-secret-key": string;
+            };
             path: {
-                symbol: "ltc";
+                symbol: "ltc" | "sol";
             };
             cookie?: never;
         };
@@ -526,6 +560,29 @@ export interface operations {
                             consumed: number;
                             remaining: number;
                         };
+                    };
+                };
+            };
+            /** @description Coin not active - Cost: 0 tokens */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default 404 */
+                        status: number;
+                        message: string;
+                    };
+                    "multipart/form-data": {
+                        /** @default 404 */
+                        status: number;
+                        message: string;
+                    };
+                    "text/plain": {
+                        /** @default 404 */
+                        status: number;
+                        message: string;
                     };
                 };
             };

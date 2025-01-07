@@ -25,11 +25,26 @@ export class WalletAPI {
 
         this.client = createClient<paths>({
             baseUrl,
-            headers: {
-                'X-API-Key': this.apiKey,
-                'X-Secret-Key': this.secretKey,
-            },
         });
+    }
+
+    private createApiKeyParams<T extends Record<string, any>>(params: T) {
+        return {
+            ...params,
+            header: {
+                'x-api-key': this.apiKey,
+            },
+        };
+    }
+
+    private createSecretKeyParams<T extends Record<string, any>>(params: T) {
+        return {
+            ...params,
+            header: {
+                'x-api-key': this.apiKey,
+                'x-secret-key': this.secretKey,
+            },
+        };
     }
 
     /**
@@ -38,7 +53,9 @@ export class WalletAPI {
      * @throws {Error} When the API request fails or returns a non-200 status
      */
     public async healthCheck() {
-        const { data, error, response } = await this.client.GET('/api/health');
+        const { data, error, response } = await this.client.GET('/api/health', {
+            params: this.createApiKeyParams({}),
+        });
 
         if (error || response.status !== 200) {
             console.error('API Error:', error);
@@ -61,9 +78,7 @@ export class WalletAPI {
      */
     public async getPriceBySymbol(symbol: PriceSymbol): Promise<PriceResponse> {
         const { data, error, response } = await this.client.GET('/api/price/{symbol}', {
-            params: {
-                path: { symbol },
-            },
+            params: this.createApiKeyParams({ path: { symbol } }),
         });
 
         if (error || response.status !== 200) {
@@ -89,9 +104,9 @@ export class WalletAPI {
      */
     public async validateAddress(address: string, symbol: ValidateAddressSymbol): Promise<boolean> {
         const { data, error, response } = await this.client.POST('/api/validate-address/{symbol}', {
-            params: {
+            params: this.createSecretKeyParams({
                 path: { symbol },
-            },
+            }),
             body: { address },
         });
 
@@ -117,9 +132,9 @@ export class WalletAPI {
      */
     public async getBalance(symbol: BalanceSymbol): Promise<BalanceResponse> {
         const { data, error, response } = await this.client.GET('/api/balance/{symbol}', {
-            params: {
+            params: this.createSecretKeyParams({
                 path: { symbol },
-            },
+            }),
         });
 
         if (error || response.status !== 200) {
@@ -154,9 +169,9 @@ export class WalletAPI {
      */
     public async sendTransaction(recipients: SendTransactionRecipients, symbol: SendTransactionSymbol): Promise<SendTransactionResponse> {
         const { data, error, response } = await this.client.POST('/api/send-transaction/{symbol}', {
-            params: {
+            params: this.createSecretKeyParams({
                 path: { symbol },
-            },
+            }),
             body: { recipients },
         });
 
